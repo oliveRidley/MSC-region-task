@@ -87,11 +87,49 @@ ylabel('latitude (^oN)')
 %	  MSC.lon_E_<30)  this had bits over land, but it is the
 %	  Agulhas bank.  
 MSC.regionNum(384)=8;
-MSC.regionAbev{384}='AAZ';
+MSC.regionAbrev{384}='AAZ';
 MSC.regionName{384}='Antarctic';
 MSC.regionNum(384)=2;
-MSC.regionAbev{384}='NA';
+MSC.regionAbrev{384}='NA';
 MSC.regionName{384}='North Atlantic';
+
+
+% still there are 11 stations over land
+land=find(MSC.regionNum==0);
+%>> MSC(land,[2 3 7 8])
+%
+%ans =
+%
+%  11×4 table
+%
+%      Cruise             Site           lat_N_    lon_E_
+%    ___________    _________________    ______    ______
+%
+%    {'KS-21-7'}    {'Hokkaido'     }        42    142.7 
+%    {'KS-21-7'}    {'Hokkaido'     }        42    142.7 
+%    {'KS-21-7'}    {'Hokkaido'     }      42.1    141.3 
+%    {'KS-21-7'}    {'Hokkaido'     }      42.1    141.3 
+%    {'KS-21-7'}    {'Hokkaido'     }      42.3    140.6 
+%    {'KS-21-7'}    {'Hokkaido'     }      42.3    140.6 
+%    {'KS-21-7'}    {'Hokkaido'     }        42    142.7 
+%    {'KS-21-7'}    {'Hokkaido'     }        42    142.7 
+%    {'KS-21-7'}    {'Hokkaido'     }      42.1    141.4 
+%    {'KS-21-7'}    {'Hokkaido'     }      42.1    141.4 
+%    {'EK188'  }    {'Agulhas Bank '}    -33.64    26.92 
+
+%assign land(1:10) to be NP assign Hokkaido is to the north.
+
+% looking at MSC(ismember(MSC.Site,'Agulhas Bank '),[7 8
+% end-3:end]) I'd say this one is  land(11)=13 South Indian Ocean.
+% I assume these are really close to shore and on a 1deg resolution
+% map they can assigned a value of land.  
+MSC.regionNum(land(1:10))=3;
+MSC.regionName(land(1:10))=cellstr('North Pacific');
+MSC.regionAbrev(land(1:10))=cellstr('NP');
+
+MSC.regionNum(land(11))=13;
+MSC.regionName{land(11)}='South Indian Ocean';
+MSC.regionAbrev{land(11)}='SI';
 
 save JETZON_MSC_POC_fluxes_Elisa_010925 MSC
 
